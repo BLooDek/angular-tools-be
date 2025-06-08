@@ -66,6 +66,17 @@ const handleUserLogin: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
 ) => {
+  /* #swagger.tags = ['Auth']
+      #swagger.description = 'Logs in a user and returns a JWT token.'
+      #swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: { $ref: "#/components/schemas/Login" }
+              }
+          }
+      }
+  */
   try {
     const { user } = req.body;
 
@@ -105,7 +116,9 @@ const handleUserLogout: RequestHandler = (
 };
 
 router.post('/register', valideUserCreate, handleUserCreation);
+
 router.post('/login', valideUserCreate, validateUserLogin, handleUserLogin);
+
 router.get(
   '/check-token',
   authorizeUser,

@@ -20,43 +20,6 @@ interface Tab {
   userId: string;
 }
 
-/**
- * @swagger
- * /api/tabs:
- *   post:
- *     summary: Add a new tab
- *     tags: [Tabs]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - title
- *               - type
- *             properties:
- *               title:
- *                 type: string
- *                 description: The title of the tab
- *               type:
- *                 type: string
- *                 description: The type of the tab (e.g., 'document', 'spreadsheet')
- *             example:
- *               title: "My New Document"
- *               type: "document"
- *     responses:
- *       201:
- *         description: The tab was successfully created
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/tab'
- *       500:
- *         description: Some server error
- */
 const handleAddTab: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
@@ -75,26 +38,6 @@ const handleAddTab: RequestHandler = async (
   }
 };
 
-/**
- * @swagger
- * /api/tabs:
- *   get:
- *     summary: Get all tabs for the authenticated user
- *     tags: [Tabs]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: A list of tabs
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '/components/schemas/Tab'
- *       500:
- *         description: Some server error
- */
 const handleGetTabs: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
@@ -111,52 +54,6 @@ const handleGetTabs: RequestHandler = async (
   }
 };
 
-/**
- * @swagger
- * /api/tabs/remove:
- *   post:
- *     summary: Delete a tab by ID
- *     tags: [Tabs]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - id
- *             properties:
- *               id:
- *                 type: string
- *                 description: The ID of the tab to delete
- *             example:
- *               id: "clx0z0z0z0000000000000000"
- *     responses:
- *       200:
- *         description: Tab deleted successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Tab deleted successfully"
- *       404:
- *         description: Tab not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Tab not found"
- *       500:
- *         description: Some server error
- */
 const handleDeleteTab: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
