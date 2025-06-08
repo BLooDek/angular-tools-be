@@ -9,5 +9,5 @@ export const defaultErrorHandler = (
 ) =>
   res.status(code).json({
     error: message,
-    details: IS_DEV ? error.message : null,
+    details: IS_DEV && error?.message ? error?.message : null,
   });

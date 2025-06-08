@@ -7,6 +7,9 @@ import {
 import { PrismaClient } from '@prisma/client';
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'; // Added
+import { JWT_SECRET } from '../../config/app.js'; // Added
+
 const prisma = new PrismaClient();
 
 export const valideUserCreate: RequestHandler = (
@@ -70,4 +73,43 @@ export const validateUserLogin: RequestHandler = async (
   (req as any).body.user = user;
 
   next();
+};
+
+export const authorizeUser: RequestHandler = async (
+  req: ExpressRequest,
+  res: ExpressResponse,
+  next: NextFunction,
+) => {
+  try {
+    const token = req?.cookies?.token;
+
+    if (!token) {
+      defaultErrorHandler(null, res, 'No token provided', 401);
+      return;
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+    });
+
+    if (!user) {
+      defaultErrorHandler(null, res, 'Unauthorized', 401);
+      return;
+    }
+
+    (req as any).user = user;
+    next();
+  } catch (error: { message: string } | any) {
+    console.log(error);
+    if (error.name === 'TokenExpiredError') {
+      defaultErrorHandler(error, res, 'Token expired', 401);
+      return;
+    }
+    if (error.name === 'JsonWebTokenError') {
+      defaultErrorHandler(error, res, 'Invalid token', 401);
+      return;
+    }
+    defaultErrorHandler(error, res, 'Authorization failed', 500);
+  }
 };

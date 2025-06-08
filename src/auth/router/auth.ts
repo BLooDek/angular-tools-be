@@ -2,9 +2,11 @@ import {
   Request as ExpressRequest,
   Response as ExpressResponse,
   Router,
+  Request,
 } from 'express';
 import { PrismaClient } from '@prisma/client';
 import {
+  authorizeUser,
   validateUserLogin,
   valideUserCreate,
 } from '../middleware/authorization.js';
@@ -15,6 +17,16 @@ import { JWT_SECRET } from '../../config/app.js';
 
 const prisma = new PrismaClient();
 const router: Router = Router();
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+}
+
+interface RequestWithUser extends Request {
+  user: User;
+}
 
 import { RequestHandler } from 'express';
 
@@ -74,7 +86,32 @@ const handleUserLogin: RequestHandler = async (
   }
 };
 
+const handleUserLogout: RequestHandler = (
+  req: ExpressRequest,
+  res: ExpressResponse,
+) => {
+  try {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error: { message: string } | any) {
+    defaultErrorHandler(error, res, 'Logout failed', 500);
+  }
+};
+
 router.post('/users', valideUserCreate, handleUserCreation);
 router.post('/login', valideUserCreate, validateUserLogin, handleUserLogin);
+router.get(
+  '/check-token',
+  authorizeUser,
+  async (req: ExpressRequest, res: ExpressResponse) => {
+    const requestWithUser = req as RequestWithUser;
+    const { id, email, name } = requestWithUser.user;
+    res
+      .status(200)
+      .json({ message: 'Token is valid', user: { id, email, name } });
+  },
+);
+
+router.post('/logout', handleUserLogout);
 
 export default router;
