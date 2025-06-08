@@ -3,6 +3,7 @@ import {
   Response as ExpressResponse,
   Router,
   Request,
+  RequestHandler,
 } from 'express';
 import { PrismaClient } from '@prisma/client';
 import {
@@ -24,11 +25,9 @@ interface User {
   name: string;
 }
 
-interface RequestWithUser extends Request {
+export interface RequestWithUser extends Request {
   user: User;
 }
-
-import { RequestHandler } from 'express';
 
 const handleUserCreation: RequestHandler = async (
   req: ExpressRequest,
