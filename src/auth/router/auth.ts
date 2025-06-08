@@ -13,7 +13,7 @@ import {
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
-import { JWT_SECRET } from '../../config/app.js';
+import { IS_DEV, JWT_SECRET } from '../../config/app.js';
 
 const prisma = new PrismaClient();
 const router: Router = Router();
@@ -51,7 +51,8 @@ const handleUserCreation: RequestHandler = async (
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      sameSite: IS_DEV ? 'lax' : 'none',
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 3600000, // 1 hour
     });
 
@@ -75,11 +76,17 @@ const handleUserLogin: RequestHandler = async (
 
     res.cookie('token', token, {
       httpOnly: true,
+      sameSite: IS_DEV ? 'lax' : 'none',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 3600000, // 1 hour
     });
 
-    const { password: _, ...userWithoutPassword } = user;
+    const {
+      password: _,
+      id: __,
+      createdAt: ___,
+      ...userWithoutPassword
+    } = user;
     res.status(200).json(userWithoutPassword);
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Login failed', 500);
@@ -98,17 +105,15 @@ const handleUserLogout: RequestHandler = (
   }
 };
 
-router.post('/users', valideUserCreate, handleUserCreation);
+router.post('/register', valideUserCreate, handleUserCreation);
 router.post('/login', valideUserCreate, validateUserLogin, handleUserLogin);
 router.get(
   '/check-token',
   authorizeUser,
   async (req: ExpressRequest, res: ExpressResponse) => {
     const requestWithUser = req as RequestWithUser;
-    const { id, email, name } = requestWithUser.user;
-    res
-      .status(200)
-      .json({ message: 'Token is valid', user: { id, email, name } });
+    const { email, name } = requestWithUser.user;
+    res.status(200).json({ email, name });
   },
 );
 
