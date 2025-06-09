@@ -49,14 +49,13 @@ const handleUserCreation: RequestHandler = async (
     });
 
     res.cookie('token', token, {
-      httpOnly: true,
+      httpOnly: true, // TODO MOVE TO CONSTANTS
       sameSite: IS_DEV ? 'lax' : 'none',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 3600000, // 1 hour
     });
 
-    const { password: _, ...userWithoutPassword } = newUser;
-    res.status(201).json(userWithoutPassword);
+    res.status(201).json({ name, email });
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Error creating user', 500);
   }
@@ -91,13 +90,8 @@ const handleUserLogin: RequestHandler = async (
       maxAge: 3600000, // 1 hour
     });
 
-    const {
-      password: _,
-      id: __,
-      createdAt: ___,
-      ...userWithoutPassword
-    } = user;
-    res.status(200).json(userWithoutPassword);
+    const { name, email } = user;
+    res.status(200).json({ name, email });
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Login failed', 500);
   }
