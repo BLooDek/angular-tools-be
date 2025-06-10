@@ -25,6 +25,7 @@ model tabs {
   userId    String   @db.ObjectId
   title     String
   type       String
+  active     Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
