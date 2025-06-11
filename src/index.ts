@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import authRouter from './auth/router/auth.js';
 import tabsRouter from './tabs/router/tabs.js';
-import { authorizeUser } from './auth/middleware/authorization.js';
+import notesRouter from './notes/router/notes.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import swaggerDocument from './config/swagger_output.json' with { type: 'json' };
@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api', tabsRouter);
+app.use('/api', notesRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
