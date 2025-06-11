@@ -72,6 +72,11 @@ export const handleDeleteTab: RequestHandler = async (
       res.status(404).json({ error: 'Tab not found' });
       return;
     }
+
+    await prisma.notes.updateMany({
+      where: { tabId: id, userId },
+      data: { active: false },
+    });
     res.status(200).json({ message: 'Tab deleted successfully' });
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Error deleting tab', 500);

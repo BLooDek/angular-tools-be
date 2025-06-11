@@ -11,7 +11,7 @@ router.use(authorizeUser);
 
 router.post('/notes', handleAddNote);
 router.post('/notes/get', handleGetNotes);
-router.patch('/notes', handleUpdateNote); // Assuming this is for updating notes
+router.put('/notes', handleUpdateNote);
 router.post('/notes/remove', handleDeleteNote);
 
 export default router;
