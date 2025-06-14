@@ -5,8 +5,10 @@ import authRouter from './auth/router/auth.js';
 import tabsRouter from './tabs/router/tabs.js';
 import notesRouter from './notes/router/notes.js';
 import cookieParser from 'cookie-parser';
+import mailRouter from './mail/routes/mail.js';
 import cors from 'cors';
 import swaggerDocument from './config/swagger_output.json' with { type: 'json' };
+import { authorizeUser } from './auth/middleware/authorization.js';
 
 export const port = process.env.APP_PORT || 3000;
 const app = express();
@@ -20,9 +22,11 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
 app.use('/api/auth', authRouter);
-app.use('/api', tabsRouter);
-app.use('/api', notesRouter);
+app.use('/api', mailRouter);
+app.use('/api', authorizeUser, tabsRouter);
+app.use('/api', authorizeUser, notesRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

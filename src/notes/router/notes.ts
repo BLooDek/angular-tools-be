@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { authorizeUser } from '../../auth/middleware/authorization.js';
 import {
   handleAddNote,
   handleDeleteNote,
@@ -7,7 +6,6 @@ import {
   handleUpdateNote,
 } from '../../notes/controllers/notes.js';
 const router: Router = Router();
-router.use(authorizeUser);
 
 router.post('/notes', handleAddNote);
 router.post('/notes/get', handleGetNotes);
