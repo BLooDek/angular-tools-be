@@ -1,11 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import {
-  Request as ExpressRequest,
-  Response as ExpressResponse,
-  NextFunction,
-  RequestHandler,
-} from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse, NextFunction, RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';

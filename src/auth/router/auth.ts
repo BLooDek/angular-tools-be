@@ -1,25 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import {
-  Request as ExpressRequest,
-  Response as ExpressResponse,
-  Request,
-  RequestHandler,
-  Router,
-} from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse, Request, RequestHandler, Router } from 'express';
 import bcrypt from 'bcrypt';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
-import {
-  authorizeUser,
-  validateUserLogin,
-  valideUserCreate,
-} from '../middleware/authorization.js';
-import {
-  handleUserCreation,
-  handleUserLogin,
-  handleUserLogout,
-} from '../controllers/auth.js';
+import { authorizeUser, validateUserLogin, valideUserCreate } from '../middleware/authorization.js';
+import { handleUserCreation, handleUserLogin, handleUserLogout } from '../controllers/auth.js';
 import { IS_DEV, JWT_SECRET } from '../../config/app.js';
 
 const prisma = new PrismaClient();
