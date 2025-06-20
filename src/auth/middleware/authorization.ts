@@ -9,7 +9,7 @@ import {
 import bcrypt from 'bcrypt';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
-import { JWT_SECRET } from '../../config/app.js';
+import { COOKIE_AUTH, JWT_SECRET } from '../../config/app.js';
 
 const prisma = new PrismaClient();
 
@@ -82,11 +82,9 @@ export const authorizeUser: RequestHandler = async (
   next: NextFunction,
 ) => {
   try {
-    let token = req?.cookies?.token;
-
-    if (!token) {
-      token = req.headers.authorization?.split(' ')[1];
-    }
+    const token = COOKIE_AUTH
+      ? req?.cookies?.token
+      : req.headers.authorization?.split(' ')[1];
 
     if (!token) {
       defaultErrorHandler(null, res, 'No token provided', 401);

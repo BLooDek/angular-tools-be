@@ -1,10 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import {
-  Request as ExpressRequest,
-  Response as ExpressResponse,
-  RequestHandler,
-} from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse, RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
@@ -48,7 +44,7 @@ export const handleUserCreation: RequestHandler = async (
       maxAge: 3600000, // 1 hour
     });
 
-    res.status(201).json({ name, email });
+    res.status(201).json({ name, email, token });
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Error creating user', 500);
   }
@@ -84,7 +80,7 @@ export const handleUserLogin: RequestHandler = async (
     });
 
     const { name, email } = user;
-    res.status(200).json({ name, email });
+    res.status(200).json({ name, email, token });
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Login failed', 500);
   }
