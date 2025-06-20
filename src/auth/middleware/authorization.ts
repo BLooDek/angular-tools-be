@@ -1,14 +1,15 @@
+import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
 import {
-  RequestHandler,
   Request as ExpressRequest,
   Response as ExpressResponse,
   NextFunction,
+  RequestHandler,
 } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken'; // Added
-import { JWT_SECRET } from '../../config/app.js'; // Added
+
+import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
+import { JWT_SECRET } from '../../config/app.js';
 
 const prisma = new PrismaClient();
 
@@ -81,7 +82,11 @@ export const authorizeUser: RequestHandler = async (
   next: NextFunction,
 ) => {
   try {
-    const token = req?.cookies?.token;
+    let token = req?.cookies?.token;
+
+    if (!token) {
+      token = req.headers.authorization?.split(' ')[1];
+    }
 
     if (!token) {
       defaultErrorHandler(null, res, 'No token provided', 401);
