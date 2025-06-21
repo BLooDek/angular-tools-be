@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --env-file .env-dev src/index.ts",
-    "prod": "node --env-file .env dist/index.js",
+    "prod": "node dist/index.js",
     "build": "tsc",
     "start": "npm run build && npm run prod",
     "lint": "eslint .",
