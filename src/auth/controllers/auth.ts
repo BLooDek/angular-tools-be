@@ -1,6 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import { Request as ExpressRequest, Response as ExpressResponse, RequestHandler } from 'express';
+import {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+  RequestHandler,
+} from 'express';
 import bcrypt from 'bcrypt';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
@@ -54,17 +58,6 @@ export const handleUserLogin: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
 ) => {
-  /* #swagger.tags = ['Auth']
-      #swagger.description = 'Logs in a user and returns a JWT token.'
-      #swagger.requestBody = {
-          required: true,
-          content: {
-              "application/json": {
-                  schema: { $ref: "#/components/schemas/Login" }
-              }
-          }
-      }
-  */
   try {
     const { user } = req.body;
 

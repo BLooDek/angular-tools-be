@@ -1,8 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
+
 import { transporter } from '../controllers/mail.js';
 const router: Router = Router();
 
 router.post('/send-email', ((req: Request, res: Response) => {
+  return res.status(404).send('Method Not Allowed, dont even try'); // Prevent GET requests
   const { to, subject, text } = req.body;
 
   if (!to || !subject || !text) {
