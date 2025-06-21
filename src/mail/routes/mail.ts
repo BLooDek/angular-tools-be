@@ -4,8 +4,8 @@ import { transporter } from '../controllers/mail.js';
 const router: Router = Router();
 
 router.post('/send-email', ((req: Request, res: Response) => {
-  return res.status(404).send('Method Not Allowed, dont even try'); // Prevent GET requests
-  const { to, subject, text } = req.body;
+  return res.status(404).send('Method Not Allowed, dont even try');
+  const { to, subject, text } = req.body ?? {};
 
   if (!to || !subject || !text) {
     return res.status(400).send('Missing required fields: to, subject, text');

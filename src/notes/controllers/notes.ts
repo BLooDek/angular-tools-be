@@ -1,13 +1,14 @@
+import { PrismaClient } from '@prisma/client';
 import {
   Request as ExpressRequest,
   Response as ExpressResponse,
-  Router,
   Request,
   RequestHandler,
+  Router,
 } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { RequestWithUser } from '../../auth/router/auth.js';
+
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
+import { RequestWithUser } from '../../auth/router/auth.js';
 
 const prisma = new PrismaClient();
 
@@ -24,7 +25,7 @@ export const handleAddNote: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { title, content, tabId } = req.body;
+    const { title, content, tabId } = req.body ?? {};
     const requestWithUser = req as RequestWithUser;
     const { id: userId } = requestWithUser.user;
     const newNote: Note = await prisma.notes.create({
@@ -41,7 +42,7 @@ export const handleGetNotes: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { tabId } = req.body;
+    const { tabId } = req.body ?? {};
     const requestWithUser = req as RequestWithUser;
     const { id: userId } = requestWithUser.user;
     const notes: Note[] = await prisma.notes.findMany({
@@ -65,7 +66,7 @@ export const handleUpdateNote: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { id, title, content, tabId } = req.body;
+    const { id, title, content, tabId } = req.body ?? {};
     const requestWithUser = req as RequestWithUser;
     const { id: userId } = requestWithUser.user;
 
@@ -85,7 +86,7 @@ export const handleDeleteNote: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { id } = req.body;
+    const { id } = req.body ?? {};
     const requestWithUser = req as RequestWithUser;
     const { id: userId } = requestWithUser.user;
     await prisma.notes.update({

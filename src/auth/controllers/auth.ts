@@ -16,6 +16,19 @@ export const handleUserLogout: RequestHandler = (
   res: ExpressResponse,
 ) => {
   try {
+    /* #swagger.requestBody = {
+            required: false,
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                        },
+                    }  
+                }
+            }
+        } 
+    */
     res.clearCookie('token');
     res.status(200).json({ message: 'Logged out successfully' });
   } catch (error: { message: string } | any) {
@@ -27,7 +40,24 @@ export const handleUserCreation: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { email, name, password } = req.body;
+    /* #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            password: { type: "string" },
+                            email: { type: "string" },
+                            name: { type: "string" },
+                        },
+                        required: ["password", "email"]
+                    }  
+                }
+            }
+        } 
+    */
+    const { email, name, password } = req.body ?? {};
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await prisma.user.create({
       data: {
@@ -59,7 +89,24 @@ export const handleUserLogin: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { user } = req.body;
+    /* #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            password: { type: "string" },
+                            email: { type: "string" },
+                        },
+                        required: ["password", "email"]
+                    }  
+                }
+            }
+        } 
+    */
+
+    const { user } = req.body ?? {};
 
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: '1h',

@@ -1,7 +1,20 @@
-import { Request as ExpressRequest, Response as ExpressResponse, Request, Router } from 'express';
+import {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+  Request,
+  Router,
+} from 'express';
 
-import { authorizeUser, validateUserLogin, valideUserCreate } from '../middleware/authorization.js';
-import { handleUserCreation, handleUserLogin, handleUserLogout } from '../controllers/auth.js';
+import {
+  authorizeUser,
+  validateUserLogin,
+  valideUserCreate,
+} from '../middleware/authorization.js';
+import {
+  handleUserCreation,
+  handleUserLogin,
+  handleUserLogout,
+} from '../controllers/auth.js';
 
 const router: Router = Router();
 
@@ -16,9 +29,7 @@ export interface RequestWithUser extends Request {
 }
 
 router.post('/register', valideUserCreate, handleUserCreation);
-
 router.post('/login', valideUserCreate, validateUserLogin, handleUserLogin);
-
 router.get(
   '/check-token',
   authorizeUser,
@@ -28,7 +39,6 @@ router.get(
     res.status(200).json({ email, name });
   },
 );
-
 router.post('/logout', handleUserLogout);
 
 export default router;

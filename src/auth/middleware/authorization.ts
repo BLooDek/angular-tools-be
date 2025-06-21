@@ -1,6 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import { Request as ExpressRequest, Response as ExpressResponse, NextFunction, RequestHandler } from 'express';
+import {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+  NextFunction,
+  RequestHandler,
+} from 'express';
 import bcrypt from 'bcrypt';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
@@ -13,7 +18,7 @@ export const valideUserCreate: RequestHandler = (
   res: ExpressResponse,
   next: NextFunction,
 ) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body ?? {};
 
   if (!email || !password) {
     res.status(400).json({
@@ -38,7 +43,7 @@ export const validateUserLogin: RequestHandler = async (
   res: ExpressResponse,
   next: NextFunction,
 ) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body ?? {};
 
   const user = await prisma.user.findUnique({
     where: { email },

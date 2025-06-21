@@ -1,13 +1,14 @@
+import { PrismaClient } from '@prisma/client';
 import {
   Request as ExpressRequest,
   Response as ExpressResponse,
-  Router,
   Request,
   RequestHandler,
+  Router,
 } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { RequestWithUser } from '../../auth/router/auth.js';
+
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
+import { RequestWithUser } from '../../auth/router/auth.js';
 
 const prisma = new PrismaClient();
 
@@ -23,7 +24,7 @@ export const handleAddTab: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { title, type } = req.body;
+    const { title, type } = req.body ?? {};
     const requestWithUser = req as RequestWithUser;
     const { id: userId } = requestWithUser.user;
     const newTab: Tab = await prisma.tabs.create({
@@ -60,7 +61,7 @@ export const handleDeleteTab: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { id } = req.body;
+    const { id } = req.body ?? {};
     const requestWithUser = req as RequestWithUser;
     const { id: userId } = requestWithUser.user;
     const deletedTab = await prisma.tabs.updateMany({
