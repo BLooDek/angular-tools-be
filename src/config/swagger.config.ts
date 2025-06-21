@@ -45,11 +45,7 @@ const options = {
       },
     },
   },
-  apis: [
-    './src/index.ts',
-    './src/tabs/router/tabs.ts',
-    './src/auth/router/auth.ts',
-  ],
+  apis: ['./src/index.ts'],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
