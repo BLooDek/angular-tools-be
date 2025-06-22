@@ -24,7 +24,7 @@
     "swagger:generate": "tsx src/config/swagger.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^6.10.1",
     "@types/jsonwebtoken": "^9.0.9",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
@@ -52,7 +52,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",
     "prettier": "^3.5.3",
-    "prisma": "^6.9.0",
+    "prisma": "^6.10.1",
     "swagger-autogen": "^2.23.7",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"

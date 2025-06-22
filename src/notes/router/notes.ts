@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import {
   handleAddNote,
   handleDeleteNote,
@@ -8,7 +9,7 @@ import {
 const router: Router = Router();
 
 router.post('/notes', handleAddNote);
-router.post('/notes/get', handleGetNotes);
+router.get('/notes/:id', handleGetNotes);
 router.put('/notes', handleUpdateNote);
 router.post('/notes/remove', handleDeleteNote);
 

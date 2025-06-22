@@ -42,7 +42,11 @@ export const handleGetNotes: RequestHandler = async (
   res: ExpressResponse,
 ) => {
   try {
-    const { tabId } = req.body ?? {};
+    const tabId = req.params.id;
+    if (!tabId) {
+      res.status(400).json({ error: 'Tab ID is required' });
+      return;
+    }
     const requestWithUser = req as RequestWithUser;
     const { id: userId } = requestWithUser.user;
     const notes: Note[] = await prisma.notes.findMany({
