@@ -41,8 +41,8 @@ model notes {
     userId    String   @db.ObjectId
     tabId     String   @db.ObjectId
     content   String
-    title   String
-    active     Boolean @default(true)
+    title     String
+    active    Boolean @default(true)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     user      User     @relation(fields: [userId], references: [id])
