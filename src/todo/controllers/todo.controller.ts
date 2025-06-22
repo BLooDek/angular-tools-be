@@ -6,7 +6,7 @@ import { Todo } from '../models/todo.interface.js';
 import { RequestWithUser } from '../../auth/router/auth.js';
 const prisma = new PrismaClient();
 
-export const handleGetTodos = async (req: Request, res: Response) => {
+export const getTodos = async (req: Request, res: Response) => {
   try {
     const tabId = req.params.id;
     if (!tabId) {
@@ -36,7 +36,7 @@ export const handleGetTodos = async (req: Request, res: Response) => {
   }
 };
 
-export const handleAddTodo = async (req: Request, res: Response) => {
+export const addTodo = async (req: Request, res: Response) => {
   try {
     const { title, content, tabId, completed, notify, notifyAt } =
       req.body ?? {};
