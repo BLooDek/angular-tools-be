@@ -78,7 +78,7 @@ export const handleUserCreation: RequestHandler = async (
       maxAge: 3600000, // 1 hour
     });
 
-    res.status(201).json({ name, email, token });
+    res.status(201).json({ name, email });
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Error creating user', 500);
   }
@@ -120,7 +120,7 @@ export const handleUserLogin: RequestHandler = async (
     });
 
     const { name, email } = user;
-    res.status(200).json({ name, email, token });
+    res.status(200).json({ name, email });
   } catch (error: { message: string } | any) {
     defaultErrorHandler(error, res, 'Login failed', 500);
   }
