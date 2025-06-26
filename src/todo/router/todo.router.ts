@@ -7,8 +7,6 @@ import {
   updateTodo,
 } from '../controllers/todo.controller.js';
 import { validateAddTodo } from '../middleware/todo.middleware.js';
-import { Todo } from '../models/todo.interface.js';
-import { RequestWithUser } from '../../auth/router/auth.js';
 const router: Router = Router();
 const prisma = new PrismaClient();
 
