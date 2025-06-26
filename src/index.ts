@@ -1,14 +1,16 @@
+import swaggerUi from 'swagger-ui-express';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import helmet from 'helmet';
-import swaggerUi from 'swagger-ui-express';
-import authRouter from './auth/router/auth.js';
-import tabsRouter from './tabs/router/tabs.js';
-import notesRouter from './notes/router/notes.js';
-import cookieParser from 'cookie-parser';
-import mailRouter from './mail/routes/mail.js';
 import cors from 'cors';
-import swaggerDocument from './config/swagger_output.json' with { type: 'json' };
+
 import { authorizeUser } from './auth/middleware/authorization.js';
+import swaggerDocument from './config/swagger_output.json' with { type: 'json' };
+import todoRouter from './todo/router/todo.router.js';
+import notesRouter from './notes/router/notes.js';
+import authRouter from './auth/router/auth.js';
+import mailRouter from './mail/routes/mail.js';
+import tabsRouter from './tabs/router/tabs.js';
 
 export const port = process.env.APP_PORT || 3000;
 const app = express();
@@ -27,6 +29,7 @@ app.use('/api/auth', authRouter);
 app.use('/api', mailRouter);
 app.use('/api', authorizeUser, tabsRouter);
 app.use('/api', authorizeUser, notesRouter);
+app.use('/api', authorizeUser, todoRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

@@ -10,19 +10,13 @@ import {
   validateUserLogin,
   valideUserCreate,
 } from '../middleware/authorization.js';
+import { User } from '../models/auth.interface.js';
 import {
   handleUserCreation,
   handleUserLogin,
   handleUserLogout,
 } from '../controllers/auth.js';
-
 const router: Router = Router();
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
 
 export interface RequestWithUser extends Request {
   user: User;
