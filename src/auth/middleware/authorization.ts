@@ -13,7 +13,7 @@ import { COOKIE_AUTH, JWT_SECRET } from '../../config/app.js';
 
 const prisma = new PrismaClient();
 
-export const valideUserCreate: RequestHandler = (
+export const valideUserCreate: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
   next: NextFunction,
@@ -32,6 +32,19 @@ export const valideUserCreate: RequestHandler = (
     res.status(400).json({
       error: 'Invalid email format',
     });
+    return;
+  }
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (user) {
+    defaultErrorHandler(
+      { message: 'Email already exists' },
+      res,
+      'User already exists',
+      409,
+    );
     return;
   }
 
