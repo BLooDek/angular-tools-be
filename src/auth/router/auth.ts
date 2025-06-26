@@ -7,6 +7,7 @@ import {
 
 import {
   authorizeUser,
+  validateUserExists,
   validateUserLogin,
   valideUserCreate,
 } from '../middleware/authorization.js';
@@ -22,7 +23,12 @@ export interface RequestWithUser extends Request {
   user: User;
 }
 
-router.post('/register', valideUserCreate, handleUserCreation);
+router.post(
+  '/register',
+  valideUserCreate,
+  validateUserExists,
+  handleUserCreation,
+);
 router.post('/login', valideUserCreate, validateUserLogin, handleUserLogin);
 router.get(
   '/check-token',

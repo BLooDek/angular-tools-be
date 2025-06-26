@@ -34,6 +34,16 @@ export const valideUserCreate: RequestHandler = async (
     });
     return;
   }
+
+  next();
+};
+
+export const validateUserExists: RequestHandler = async (
+  req: ExpressRequest,
+  res: ExpressResponse,
+  next: NextFunction,
+) => {
+  const { email } = req.body ?? {};
   const user = await prisma.user.findUnique({
     where: { email },
   });
@@ -47,7 +57,6 @@ export const valideUserCreate: RequestHandler = async (
     );
     return;
   }
-
   next();
 };
 
