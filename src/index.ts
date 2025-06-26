@@ -4,13 +4,13 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 
-import { authorizeUser } from './auth/middleware/authorization.js';
+import { authorizeUser } from './auth/middleware/authorization.middleware.js';
 import swaggerDocument from './config/swagger_output.json' with { type: 'json' };
 import todoRouter from './todo/router/todo.router.js';
-import notesRouter from './notes/router/notes.js';
-import authRouter from './auth/router/auth.js';
+import notesRouter from './notes/router/notes.router.js';
+import authRouter from './auth/router/auth.router.js';
 import mailRouter from './mail/routes/mail.js';
-import tabsRouter from './tabs/router/tabs.js';
+import tabsRouter from './tabs/router/tabs.router.js';
 
 export const port = process.env.APP_PORT || 3000;
 const app = express();

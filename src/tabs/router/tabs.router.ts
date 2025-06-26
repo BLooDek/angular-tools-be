@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as tabsController from '../controllers/tabs.js';
+import * as tabsController from '../controllers/tabs.controller.js';
 const router: Router = Router();
 
 router.post('/tabs', tabsController.handleAddTab);

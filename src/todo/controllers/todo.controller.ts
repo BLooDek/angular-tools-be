@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
 import { Todo } from '../models/todo.interface.js';
-import { RequestWithUser } from '../../auth/router/auth.js';
+import { RequestWithUser } from '../../auth/router/auth.router.js';
 const prisma = new PrismaClient();
 
 export const getTodos = async (req: Request, res: Response) => {

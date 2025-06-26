@@ -8,7 +8,7 @@ import {
 import bcrypt from 'bcrypt';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
-import { IS_DEV, JWT_SECRET } from '../../config/app.js';
+import { IS_DEV, JWT_SECRET } from '../../config/app.config.js';
 
 const prisma = new PrismaClient();
 export const handleUserLogout: RequestHandler = (

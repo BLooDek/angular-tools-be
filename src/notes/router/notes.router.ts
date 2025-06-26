@@ -5,7 +5,7 @@ import {
   handleDeleteNote,
   handleGetNotes,
   handleUpdateNote,
-} from '../../notes/controllers/notes.js';
+} from '../controllers/notes.controller.js';
 const router: Router = Router();
 
 router.post('/notes', handleAddNote);

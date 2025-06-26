@@ -1,4 +1,4 @@
-import { IS_DEV } from '../../config/app.js';
+import { IS_DEV } from '../../config/app.config.js';
 import { Response } from 'express';
 
 export const defaultErrorHandler = (
