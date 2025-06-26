@@ -19,7 +19,7 @@ interface Tab {
   userId: string;
 }
 
-export const handleAddTab: RequestHandler = async (
+export const addTab: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
 ) => {
@@ -33,11 +33,11 @@ export const handleAddTab: RequestHandler = async (
 
     res.status(201).json(newTab);
   } catch (error: { message: string } | any) {
-    defaultErrorHandler(error, res, 'Error creating user', 500);
+    defaultErrorHandler(error, res, 'Error creating tab', 500);
   }
 };
 
-export const handleGetTabs: RequestHandler = async (
+export const getTabs: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
 ) => {
@@ -56,7 +56,7 @@ export const handleGetTabs: RequestHandler = async (
   }
 };
 
-export const handleDeleteTab: RequestHandler = async (
+export const deleteTab: RequestHandler = async (
   req: ExpressRequest,
   res: ExpressResponse,
 ) => {

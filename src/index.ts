@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/auth', authRouter);
-app.use('/api', mailRouter);
+// app.use('/api', mailRouter);
 app.use('/api', authorizeUser, tabsRouter);
 app.use('/api', authorizeUser, notesRouter);
 app.use('/api', authorizeUser, todoRouter);
