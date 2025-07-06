@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
 import { Todo } from '../models/todo.interface.js';
-import { RequestWithUser } from '../../auth/router/auth.router.js';
+import { RequestWithUser } from '../../auth/routers/auth.router.js';
 const prisma = new PrismaClient();
 
 export const getTodos = async (req: Request, res: Response) => {
@@ -58,7 +58,7 @@ export const updateTodo = async (req: Request, res: Response) => {
     const { id, tabId, active, title, content, completed, notify, notifyAt } =
       req.body ?? {};
     if (!id || !tabId) {
-      res.status(400).json({ error: 'Todo ID is required' });
+      res.status(400).json({ error: 'Todo/Tab ID is required' });
       return;
     }
     const requestWithUser = req as RequestWithUser;

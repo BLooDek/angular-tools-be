@@ -47,6 +47,9 @@
                   },
                   "email": {
                     "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -125,21 +128,12 @@
         }
       }
     },
-    "/api/send-email": {
+    "/api/tabs": {
       "post": {
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          "201": {
+            "description": "Created"
           }
         },
         "requestBody": {
@@ -148,28 +142,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "to": {
+                  "type": {
                     "example": "any"
                   },
-                  "subject": {
-                    "example": "any"
-                  },
-                  "text": {
+                  "title": {
                     "example": "any"
                   }
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/tabs": {
-      "post": {
-        "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
           }
         }
       },
@@ -213,12 +194,25 @@
         }
       }
     },
-    "/api/notes/get": {
-      "post": {
+    "/api/notes/{id}": {
+      "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -229,6 +223,117 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/todo/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/todo": {
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "example": "any"
+                  },
+                  "content": {
+                    "example": "any"
+                  },
+                  "tabId": {
+                    "example": "any"
+                  },
+                  "completed": {
+                    "example": "any"
+                  },
+                  "notify": {
+                    "example": "any"
+                  },
+                  "notifyAt": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": "any"
+                  },
+                  "tabId": {
+                    "example": "any"
+                  },
+                  "active": {
+                    "example": "any"
+                  },
+                  "title": {
+                    "example": "any"
+                  },
+                  "content": {
+                    "example": "any"
+                  },
+                  "completed": {
+                    "example": "any"
+                  },
+                  "notify": {
+                    "example": "any"
+                  },
+                  "notifyAt": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }

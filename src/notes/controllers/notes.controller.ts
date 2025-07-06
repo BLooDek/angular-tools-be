@@ -8,7 +8,7 @@ import {
 } from 'express';
 
 import { defaultErrorHandler } from '../../shared/utils/errorHandler.js';
-import { RequestWithUser } from '../../auth/router/auth.router.js';
+import { RequestWithUser } from '../../auth/routers/auth.router.js';
 
 const prisma = new PrismaClient();
 
