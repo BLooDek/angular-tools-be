@@ -1,23 +1,23 @@
-const loginSection = document.getElementById("login-section");
-const connectSection = document.getElementById("connect-section");
-const mediaSection = document.getElementById("media-section");
-const startMediaControls = document.getElementById("start-media-controls");
-const inCallControls = document.getElementById("in-call-controls");
+const loginSection = document.getElementById('login-section');
+const connectSection = document.getElementById('connect-section');
+const mediaSection = document.getElementById('media-section');
+const startMediaControls = document.getElementById('start-media-controls');
+const inCallControls = document.getElementById('in-call-controls');
 
-const usernameInput = document.getElementById("username-input");
-const loginBtn = document.getElementById("login-btn");
-const peerUsernameInput = document.getElementById("peer-username-input");
-const connectBtn = document.getElementById("connect-btn");
+const usernameInput = document.getElementById('username-input');
+const loginBtn = document.getElementById('login-btn');
+const peerUsernameInput = document.getElementById('peer-username-input');
+const connectBtn = document.getElementById('connect-btn');
 
-const startCallBtn = document.getElementById("start-call-btn");
-const shareScreenBtn = document.getElementById("share-screen-btn");
-const hangUpBtn = document.getElementById("hang-up-btn");
-const muteBtn = document.getElementById("mute-btn");
-const stopMediaBtn = document.getElementById("stop-media-btn");
+const startCallBtn = document.getElementById('start-call-btn');
+const shareScreenBtn = document.getElementById('share-screen-btn');
+const hangUpBtn = document.getElementById('hang-up-btn');
+const muteBtn = document.getElementById('mute-btn');
+const stopMediaBtn = document.getElementById('stop-media-btn');
 
-const localVideo = document.getElementById("localVideo");
-const remoteVideo = document.getElementById("remoteVideo");
-const statusBar = document.getElementById("status-bar");
+const localVideo = document.getElementById('localVideo');
+const remoteVideo = document.getElementById('remoteVideo');
+const statusBar = document.getElementById('status-bar');
 
 let localStream;
 let peerConnection;
@@ -26,16 +26,16 @@ let socket;
 let username;
 let peerUsername;
 const iceServers = [
-  { urls: "stun:stun.l.google.com:19302" },
-  { urls: "stun:stun.l.google.com:5349" },
-  { urls: "stun:stun1.l.google.com:3478" },
-  { urls: "stun:stun1.l.google.com:5349" },
-  { urls: "stun:stun2.l.google.com:19302" },
-  { urls: "stun:stun2.l.google.com:5349" },
-  { urls: "stun:stun3.l.google.com:3478" },
-  { urls: "stun:stun3.l.google.com:5349" },
-  { urls: "stun:stun4.l.google.com:19302" },
-  { urls: "stun:stun4.l.google.com:5349" },
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun.l.google.com:5349' },
+  { urls: 'stun:stun1.l.google.com:3478' },
+  { urls: 'stun:stun1.l.google.com:5349' },
+  { urls: 'stun:stun2.l.google.com:19302' },
+  { urls: 'stun:stun2.l.google.com:5349' },
+  { urls: 'stun:stun3.l.google.com:3478' },
+  { urls: 'stun:stun3.l.google.com:5349' },
+  { urls: 'stun:stun4.l.google.com:19302' },
+  { urls: 'stun:stun4.l.google.com:5349' },
 ];
 
 const configuration = {
@@ -43,12 +43,12 @@ const configuration = {
 };
 
 function connectToSignalingServer() {
-  const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-  socket = new WebSocket(`${wsProtocol}//${window.location.host}/signaling`);
+  const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  socket = new WebSocket(`${wsProtocol}//${window.location.host}/ws/signaling`);
 
-  socket.onopen = () => console.log("Connected to signaling server.");
+  socket.onopen = () => console.log('Connected to signaling server.');
   socket.onmessage = handleSignalingMessage;
-  socket.onerror = (err) => console.error("Signaling server error:", err);
+  socket.onerror = (err) => console.error('Signaling server error:', err);
 }
 
 function sendToServer(msg) {
@@ -57,22 +57,22 @@ function sendToServer(msg) {
 
 async function handleSignalingMessage(message) {
   const data = JSON.parse(message.data);
-  console.log("Got message:", data.type);
+  console.log('Got message:', data.type);
 
   switch (data.type) {
-    case "login":
+    case 'login':
       handleLogin(data.success);
       break;
-    case "offer":
+    case 'offer':
       await handleOffer(data.offer, data.name);
       break;
-    case "answer":
+    case 'answer':
       await handleAnswer(data.answer);
       break;
-    case "candidate":
+    case 'candidate':
       await handleCandidate(data.candidate);
       break;
-    case "leave":
+    case 'leave':
       handleLeave();
       break;
     default:
@@ -80,42 +80,42 @@ async function handleSignalingMessage(message) {
   }
 }
 
-loginBtn.addEventListener("click", () => {
+loginBtn.addEventListener('click', () => {
   username = usernameInput.value;
   if (username.length > 0) {
     connectToSignalingServer();
-    setTimeout(() => sendToServer({ type: "login", name: username }), 500);
+    setTimeout(() => sendToServer({ type: 'login', name: username }), 500);
   } else {
-    alert("Please enter a username.");
+    alert('Please enter a username.');
   }
 });
 
-connectBtn.addEventListener("click", () => {
+connectBtn.addEventListener('click', () => {
   peerUsername = peerUsernameInput.value;
   if (peerUsername.length > 0 && peerUsername !== username) {
     initiateConnection();
   } else {
-    alert("Please enter a valid peer username.");
+    alert('Please enter a valid peer username.');
   }
 });
 
-startCallBtn.addEventListener("click", () => startMedia(false));
-shareScreenBtn.addEventListener("click", () => startMedia(true));
-muteBtn.addEventListener("click", toggleMute);
-stopMediaBtn.addEventListener("click", stopLocalMedia);
+startCallBtn.addEventListener('click', () => startMedia(false));
+shareScreenBtn.addEventListener('click', () => startMedia(true));
+muteBtn.addEventListener('click', toggleMute);
+stopMediaBtn.addEventListener('click', stopLocalMedia);
 
-hangUpBtn.addEventListener("click", () => {
-  sendToServer({ type: "leave", target: peerUsername });
+hangUpBtn.addEventListener('click', () => {
+  sendToServer({ type: 'leave', target: peerUsername });
   handleLeave();
 });
 
 function handleLogin(success) {
   if (success) {
-    loginSection.style.display = "none";
-    connectSection.style.display = "flex";
+    loginSection.style.display = 'none';
+    connectSection.style.display = 'flex';
     statusBar.innerText = `Logged in as ${username}. Ready to connect.`;
   } else {
-    alert("Login failed. Username may be taken.");
+    alert('Login failed. Username may be taken.');
   }
 }
 
@@ -132,7 +132,7 @@ function createPeerConnection() {
   peerConnection.onicecandidate = (event) => {
     if (event.candidate) {
       sendToServer({
-        type: "candidate",
+        type: 'candidate',
         target: peerUsername,
         candidate: event.candidate,
       });
@@ -142,7 +142,7 @@ function createPeerConnection() {
   // **KEY FIX FOR FIREFOX:**
   // Add incoming tracks to the existing MediaStream on the video element.
   peerConnection.ontrack = (event) => {
-    console.log("Remote track received:", event.track.kind);
+    console.log('Remote track received:', event.track.kind);
     if (remoteVideo.srcObject) {
       remoteVideo.srcObject.addTrack(event.track);
     }
@@ -159,19 +159,19 @@ function createPeerConnection() {
 
 async function initiateConnection() {
   createPeerConnection();
-  dataChannel = peerConnection.createDataChannel("messaging");
+  dataChannel = peerConnection.createDataChannel('messaging');
   setupDataChannelEvents();
 
   try {
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
     sendToServer({
-      type: "offer",
+      type: 'offer',
       target: peerUsername,
       offer: peerConnection.localDescription,
     });
   } catch (e) {
-    console.error("Error creating initial offer:", e);
+    console.error('Error creating initial offer:', e);
   }
 }
 
@@ -185,7 +185,7 @@ async function handleOffer(offer, name) {
   const answer = await peerConnection.createAnswer();
   await peerConnection.setLocalDescription(answer);
   sendToServer({
-    type: "answer",
+    type: 'answer',
     target: peerUsername,
     answer: peerConnection.localDescription,
   });
@@ -200,15 +200,15 @@ async function handleCandidate(candidate) {
     try {
       await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     } catch (e) {
-      console.error("Error adding received ICE candidate", e);
+      console.error('Error adding received ICE candidate', e);
     }
   }
 }
 
 function setupDataChannelEvents() {
-  dataChannel.onopen = () => console.log("Data channel is open!");
+  dataChannel.onopen = () => console.log('Data channel is open!');
   dataChannel.onmessage = (event) =>
-    console.log("Data channel message:", event.data);
+    console.log('Data channel message:', event.data);
 }
 
 async function startMedia(isScreenShare) {
@@ -234,15 +234,15 @@ async function startMedia(isScreenShare) {
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
     sendToServer({
-      type: "offer",
+      type: 'offer',
       target: peerUsername,
       offer: peerConnection.localDescription,
     });
 
-    startMediaControls.style.display = "none";
-    inCallControls.style.display = "flex";
+    startMediaControls.style.display = 'none';
+    inCallControls.style.display = 'flex';
   } catch (error) {
-    console.error("Error starting media:", error);
+    console.error('Error starting media:', error);
     alert(`Could not start media. Error: ${error.name}`);
   }
 }
@@ -251,7 +251,7 @@ function toggleMute() {
   if (!localStream) return;
   localStream.getAudioTracks().forEach((track) => {
     track.enabled = !track.enabled;
-    muteBtn.textContent = track.enabled ? "Mute Mic" : "Unmute Mic";
+    muteBtn.textContent = track.enabled ? 'Mute Mic' : 'Unmute Mic';
   });
 }
 
@@ -271,24 +271,24 @@ async function stopLocalMedia() {
     }
   }
 
-  inCallControls.style.display = "none";
-  startMediaControls.style.display = "flex";
-  muteBtn.textContent = "Mute Mic";
+  inCallControls.style.display = 'none';
+  startMediaControls.style.display = 'flex';
+  muteBtn.textContent = 'Mute Mic';
 }
 
 function updateConnectionStatus(state) {
   statusBar.innerText = `Connection state: ${state}`;
-  if (state === "connected") {
-    connectSection.style.display = "none";
-    mediaSection.style.display = "flex";
+  if (state === 'connected') {
+    connectSection.style.display = 'none';
+    mediaSection.style.display = 'flex';
   }
-  if (state === "failed" || state === "disconnected" || state === "closed") {
+  if (state === 'failed' || state === 'disconnected' || state === 'closed') {
     handleLeave();
   }
 }
 
 function handleLeave() {
-  statusBar.innerText = "Call ended.";
+  statusBar.innerText = 'Call ended.';
   peerUsername = null;
 
   if (remoteVideo.srcObject) {
@@ -306,8 +306,8 @@ function handleLeave() {
     peerConnection.close();
     peerConnection = null;
   }
-  mediaSection.style.display = "none";
-  inCallControls.style.display = "none";
-  startMediaControls.style.display = "flex";
-  connectSection.style.display = "flex";
+  mediaSection.style.display = 'none';
+  inCallControls.style.display = 'none';
+  startMediaControls.style.display = 'flex';
+  connectSection.style.display = 'flex';
 }

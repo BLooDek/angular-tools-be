@@ -33,6 +33,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/api/auth', authRouter);
 // app.use('/api', mailRouter);
@@ -42,10 +43,9 @@ app.use('/api', authorizeUser, todoRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', signalingRouter(wsInstance));
+app.use('/ws', signalingRouter(wsInstance));
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server on port http://localhost:${port}`);
   console.log(`Swagger UI available at http://localhost:${port}/api-docs`);
 });
